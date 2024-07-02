@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import './App.css';
 import LandingPage from './landing-page';
-import QuizPage from './quizz-page';
+import QuizPage from './quiz-page';
 
 function App() {
 
