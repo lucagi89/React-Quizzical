@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import Question from './question';
 
 function QuizPage() {
 
@@ -9,7 +10,7 @@ function QuizPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://opentdb.com/api.php?amount=5');
+        const response = await fetch('https://opentdb.com/api.php?amount=5&type=multiple');
         const data = await response.json();
         if (data.response_code === 0) {
           setQuestionsData(data.results);
@@ -24,14 +25,26 @@ function QuizPage() {
     fetchData();
   }, [] );
 
-  // useEffect(() => {
-  //   console.log('Updated questionsData:', questionsData);
-  // }, [questionsData]);
+  useEffect(() => {
+
+  }, [questionsData]);
+
+  const renderQuestions = () => {
+    return questionsData.map((question, index) => {
+      return (
+          < Question key={index} questionData={question} />
+        );
+      });
+  };
+
+  useEffect(() => {
+
+  }, [questionsData]);
 
   return (
     <div className="landing-page">
       <h1>This is quiz</h1>
-      <p>Questions</p>
+      {renderQuestions()}
       <button>submit</button>
     </div>
   );
