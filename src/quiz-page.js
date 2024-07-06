@@ -5,6 +5,7 @@ import Question from './question';
 function QuizPage() {
 
   const [ questionsData, setQuestionsData ] = useState([]);
+  console.log(questionsData);
 
   const [formData, setFormData] = useState({});
 
@@ -45,8 +46,15 @@ function QuizPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target.elements);
+    setFormData(formData.map((question, index) => {
+      return {
+        ...question,
+        userAnswer: event.target[`answer${index}`].value
+      };
+    }));
   };
+
+
 
   return (
     <div className="landing-page">
