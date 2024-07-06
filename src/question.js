@@ -16,24 +16,16 @@ function Question(props) {
   const answers = answersArray().map((answer, index) => {
     return (
       <li key={index}>
-        <input type="radio" id={index} name="answer" value={answer} />
-        <label htmlFor={index}>{answer}</label>
+        <input type="radio" id={`${props.id}${index}`} name={'answer' + props.id} value={answer} />
+        <label htmlFor={index}>{decode(answer)}</label>
       </li>
     );
   });
 
-//   const decodeHTMLEntities = (text) => {
-//     const textArea = document.createElement('textarea');
-//     textArea.innerHTML = text;
-//     return textArea.value;
-// }
-
-
-
 
   return (
     <div id={props.index}>
-      <h3>{props.questionData.question}</h3>
+      <h3>{decode(props.questionData.question)}</h3>
       <ul>
         {answers}
       </ul>

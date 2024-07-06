@@ -4,7 +4,10 @@ import Question from './question';
 
 function QuizPage() {
 
-  const [ questionsData, setQuestionsData ] = React.useState([]);
+  const [ questionsData, setQuestionsData ] = useState([]);
+
+  const [formData, setFormData] = useState({});
+
 
   // get the data from the API
   useEffect(() => {
@@ -14,6 +17,13 @@ function QuizPage() {
         const data = await response.json();
         if (data.response_code === 0) {
           setQuestionsData(data.results);
+          setFormData(data.results.map((question, index) => {
+            return {
+              question: question.question,
+              correctAnswer: question.correct_answer,
+              userAnswer: ''
+            };
+          }));
         } else {
           fetchData();
         }
@@ -25,27 +35,26 @@ function QuizPage() {
     fetchData();
   }, [] );
 
-  useEffect(() => {
-
-  }, [questionsData]);
-
   const renderQuestions = () => {
     return questionsData.map((question, index) => {
       return (
-          < Question key={index} questionData={question} />
+          < Question key={index} id={index} questionData={question} />
         );
       });
   };
 
-  useEffect(() => {
-
-  }, [questionsData]);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target.elements);
+  };
 
   return (
     <div className="landing-page">
       <h1>This is quiz</h1>
-      {renderQuestions()}
-      <button>submit</button>
+      <form onSubmit={handleSubmit}>
+        {renderQuestions()}
+        <button>Submit</button>
+      </form>
     </div>
   );
 }

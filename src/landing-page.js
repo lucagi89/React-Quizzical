@@ -1,6 +1,8 @@
 import React from 'react';
 
+
 function LandingPage(props) {
+
   return (
     <div className="landing-page">
       <h1>Quizzical</h1>
