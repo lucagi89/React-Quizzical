@@ -6,10 +6,26 @@ function QuizPage() {
 
   const url = 'https://opentdb.com/api.php?amount=5&type=multiple';
   const [ questionsData, setQuestionsData ] = useState([]);
-
   const [formData, setFormData] = useState({});
 
-  let isFormSubmitted = false;
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
+  //this function will get the data from the API and set it to the state in the correct format
+  const getQuestionsData = (array) => {
+    setQuestionsData(array.map((question) => {
+      const answersArray = () => {
+        let array = question.incorrect_answers;
+        const rightAnswer = question.correct_answer;
+        const randomIndex = Math.floor(Math.random() * (array.length + 1));
+        array.splice(randomIndex, 0, rightAnswer);
+        return array;
+      }
+      return {
+        question: question.question,
+        answers: answersArray()
+      };
+    }));
+  };
 
 
   // get the data from the API
@@ -19,7 +35,9 @@ function QuizPage() {
         const response = await fetch(url);
         const data = await response.json();
         if (data.response_code === 0) {
-          setQuestionsData(data.results);
+          console.log(data.results);
+          getQuestionsData(data.results);
+
           setFormData(data.results.map((question, index) => {
             return {
               question: question.question,
@@ -38,14 +56,21 @@ function QuizPage() {
     fetchData();
   }, [] );
 
+  console.log(formData);
+
   const renderQuestions = () => {
     return questionsData.map((question, index) => {
       return (
-          < Question key={index} id={index} questionData={question} onChange={handleChange}/>
+          < Question
+            key={index}
+            id={index}
+            question={question}
+            onChange={handleChange}/>
         );
       });
   };
 
+  //this function will keep track and update the form state with the user's answer
   const handleChange = (event) => {
     setFormData(prevFormData => {
       return prevFormData.map((question, index) => {
@@ -64,14 +89,19 @@ function QuizPage() {
 
     };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setIsFormSubmitted(true);
+  }
+
   const calculateScore = () => {
-    if (!isFormSubmitted) {
-      return null;
-    } else {
+    if (isFormSubmitted) {
       const score = formData.reduce((total, question) => {
         return question.correctAnswer === question.userAnswer ? total + 1 : total;
       }, 0);
       return score;
+    }else {
+      return null;
     }
   }
 
@@ -79,11 +109,10 @@ function QuizPage() {
   return (
     <div className="landing-page">
       <h1>This is quiz</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         {renderQuestions()}
-        <button>Submit</button>
+        {isFormSubmitted ? <div>Your score is: {calculateScore()}</div> : <button>Submit</button>}
       </form>
-     {isFormSubmitted && <div>Your score is: {calculateScore()}</div>}
     </div>
   );
 }
