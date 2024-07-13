@@ -3,7 +3,7 @@ import React from 'react';
 import { decode } from 'html-entities';
 
 function Question(props) {
-    const { questionData, id, index } = props;
+    const { questionData, id, index, onChange } = props;
 
     const answersArray = () => {
     const array = [...questionData.incorrect_answers];
@@ -19,8 +19,13 @@ function Question(props) {
   const answers = shuffledAnswers.map((answer, index) => {
     return (
       <li key={index}>
-        <input type="radio" id={`${id}${index}`} name={'answer' + id} value={answer} />
-        <label htmlFor={index}>{decode(answer)}</label>
+        <input type="radio"
+          id={`${id}${index}`}
+          name={'answer' + id}
+          value={answer}
+          onChange={onChange}
+        />
+        <label htmlFor={`${id}${index}`}>{decode(answer)}</label>
       </li>
     );
   });
