@@ -55,7 +55,6 @@ function QuizPage() {
     fetchData();
   }, [] );
 
-  console.log(formData);
 
   const renderQuestions = () => {
     return questionsData.map((question, index) => {
@@ -89,9 +88,12 @@ function QuizPage() {
     };
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
+    console.log('form submitted');
     setIsFormSubmitted(true);
   }
+
+  console.log(isFormSubmitted);
 
   const calculateScore = () => {
     if (isFormSubmitted) {
@@ -108,19 +110,22 @@ function QuizPage() {
     setIsFormSubmitted(false);
   }
 
+  const renderScore =
+      <div>
+        <span>Your score is: {calculateScore()}</span>
+        <button onClick={startAgain}>Start again</button>
+      </div>
+
+
   return (
     <div className="landing-page">
       <h1>This is quiz</h1>
-      <form onSubmit={handleSubmit}>
+      <div>
         {renderQuestions()}
-        {!isFormSubmitted && <button>Check answers</button> }
-      </form>
-        {isFormSubmitted &&
-          <div>
-            <span>Your score is: {calculateScore()}</span>
-            <button onClick={startAgain()}>Start again</button>
-          </div>
-        }
+        { !isFormSubmitted && <button onClick={handleSubmit}>Check answers</button> }
+        { isFormSubmitted && renderScore }
+      </div>
+
     </div>
   );
 }
