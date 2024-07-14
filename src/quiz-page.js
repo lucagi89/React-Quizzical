@@ -5,9 +5,9 @@ import Question from './question';
 function QuizPage() {
 
   const url = 'https://opentdb.com/api.php?amount=5&type=multiple';
+
   const [ questionsData, setQuestionsData ] = useState([]);
   const [formData, setFormData] = useState({});
-
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   //this function will get the data from the API and set it to the state in the correct format
@@ -35,7 +35,6 @@ function QuizPage() {
         const response = await fetch(url);
         const data = await response.json();
         if (data.response_code === 0) {
-          console.log(data.results);
           getQuestionsData(data.results);
 
           setFormData(data.results.map((question, index) => {
@@ -90,7 +89,7 @@ function QuizPage() {
     };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     setIsFormSubmitted(true);
   }
 
@@ -105,14 +104,23 @@ function QuizPage() {
     }
   }
 
+  const startAgain = () => {
+    setIsFormSubmitted(false);
+  }
 
   return (
     <div className="landing-page">
       <h1>This is quiz</h1>
       <form onSubmit={handleSubmit}>
         {renderQuestions()}
-        {isFormSubmitted ? <div>Your score is: {calculateScore()}</div> : <button>Submit</button>}
+        {!isFormSubmitted && <button>Check answers</button> }
       </form>
+        {isFormSubmitted &&
+          <div>
+            <span>Your score is: {calculateScore()}</span>
+            <button onClick={startAgain()}>Start again</button>
+          </div>
+        }
     </div>
   );
 }
