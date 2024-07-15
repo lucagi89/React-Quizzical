@@ -11,9 +11,13 @@ function App() {
     setIsGameStarted(true);
   }
 
+  const stopGame = () => {
+    setIsGameStarted(false);
+  }
+
   return (
     <div className="App">
-      { isGameStarted ? <QuizPage /> : <LandingPage startGame={startGame}/> }
+      { isGameStarted ? <QuizPage stopGame={stopGame}/> : <LandingPage startGame={startGame}/> }
     </div>
   );
 }

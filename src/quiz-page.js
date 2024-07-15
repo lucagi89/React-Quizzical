@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import Question from './question';
 
-function QuizPage() {
+function QuizPage(props) {
 
   const url = 'https://opentdb.com/api.php?amount=5&type=multiple';
 
@@ -93,7 +93,6 @@ function QuizPage() {
     setIsFormSubmitted(true);
   }
 
-  console.log(isFormSubmitted);
 
   const calculateScore = () => {
     if (isFormSubmitted) {
@@ -108,6 +107,7 @@ function QuizPage() {
 
   const startAgain = () => {
     setIsFormSubmitted(false);
+    props.stopGame();
   }
 
   const renderScore =
@@ -119,7 +119,7 @@ function QuizPage() {
 
   return (
     <div className="quiz-page">
-      <h1>This is quiz</h1>
+      <h1>Quizzical</h1>
       <div>
         {renderQuestions()}
         { !isFormSubmitted && <button onClick={handleSubmit}>Check answers</button> }
