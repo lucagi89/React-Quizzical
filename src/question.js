@@ -5,7 +5,7 @@ import { decode } from 'html-entities';
 function Question(props) {
   const answers = props.question.answers.map((answer, index) => {
     return (
-      <li key={index}>
+      <div key={index} className='answer'>
         <input type="radio"
           id={`${props.id}${index}`}
           name={'answer' + props.id}
@@ -13,7 +13,7 @@ function Question(props) {
           onChange={props.onChange}
         />
         <label htmlFor={`${props.id}${index}`}>{decode(answer)}</label>
-      </li>
+      </div>
     );
   });
 
@@ -21,9 +21,9 @@ function Question(props) {
   return (
     <div id={props.index}>
       <h3>{decode(props.question.question)}</h3>
-      <ul>
+      <div className='answers-list'>
         {answers}
-      </ul>
+      </div>
 
     </div>
   );

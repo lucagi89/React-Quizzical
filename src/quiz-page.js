@@ -118,7 +118,7 @@ function QuizPage() {
 
 
   return (
-    <div className="landing-page">
+    <div className="quiz-page">
       <h1>This is quiz</h1>
       <div>
         {renderQuestions()}
