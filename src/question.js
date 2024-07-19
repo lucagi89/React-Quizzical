@@ -20,22 +20,25 @@ function Question(props) {
         </div>
       );
     });
+
   } else {
     answers = props.question.answers.map((answer, index) => {
       const checked = props.userAnswer === answer;
       const correct = props.question.correctAnswer === answer;
-      const className = checked ? (correct ? 'correct' : 'incorrect') : '';
+      const className = checked ? (correct ? 'correct' : 'incorrect') : (correct ? 'correct' : '')
       return (
-        <div key={index} className='answer'>
+        <div key={index}>
           <input type="radio"
             id={`${props.id}${index}`}
             name={'answer' + props.id}
             value={answer}
+            checked={checked}
             disabled
           />
           <label htmlFor={`${props.id}${index}`} className={className}>{decode(answer)}</label>
         </div>
       );
+      // console.log(className)
     });
   }
 

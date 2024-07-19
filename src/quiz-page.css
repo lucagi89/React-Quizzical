@@ -31,24 +31,10 @@ label {
   cursor: pointer;
 }
 
-input[type="radio"]:checked + label {
-  background-color: #442da0;
-  color: #fff;
-}
 
 /* Adding hover effect */
 label:hover {
   background-color: #6a6868;
-  color: #fff;
-}
-
-.right-answer {
-  background-color: #4caf50;
-  color: #fff;
-}
-
-.wrong-answer {
-  background-color: #f44336;
   color: #fff;
 }
 
@@ -64,10 +50,15 @@ button {
   cursor: pointer;
 }
 
+input[type="radio"]:checked + label {
+  background-color: #442da0;
+  color: #fff;
+}
+
 .correct{
-  background-color: #4caf50;
+  background-color: #4caf50 !important;
 }
 
 .incorrect{
-  background-color: #f44336;
+  background-color: #f44336 !important;
 }
