@@ -10,6 +10,19 @@ function QuizPage(props) {
   // const [formData, setFormData] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
+  const [rendering, setRendering] = useState('');
+
+  const calculateScore = () => {
+    if (isFormSubmitted) {
+      const score = questionsData.reduce((total, question) => {
+        return question.correctAnswer === question.userAnswer ? total + 1 : total;
+      }, 0);
+      return score;
+    }else {
+      return null;
+    }
+  }
+
   //this function will get the data from the API and set it to the state in the correct format
   const getQuestionsData = (array) => {
     setQuestionsData(array.map((question) => {
@@ -20,6 +33,7 @@ function QuizPage(props) {
         array.splice(randomIndex, 0, rightAnswer);
         return array;
       }
+
       return {
         question: question.question,
         answers: answersArray(),
@@ -67,22 +81,12 @@ function QuizPage(props) {
             < Question
               key={index}
               id={index}
-              question={question}/>
+              question={question}
+              userAnswer={question.userAnswer}  />
           );
         });
     }
   };
-
-  // const renderSolution = () => {
-  //   return questionsData.map((question, index) => {
-  //     return (
-  //       <div key={index}>
-  //         <h3>{question.question}</h3>
-  //         <p>{question.correctAnswer}</p>
-  //       </div>
-  //     );
-  //   });
-  // }
 
 
   //this function will keep track and update the form state with the user's answer
@@ -105,24 +109,12 @@ function QuizPage(props) {
 
     };
 
+
+
   const handleSubmit = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     setIsFormSubmitted(true);
-    // console.log(formData)
-    // console.log(questionsData)
-    renderQuestions(1);
-  }
-
-
-  const calculateScore = () => {
-    if (isFormSubmitted) {
-      const score = questionsData.reduce((total, question) => {
-        return question.correctAnswer === question.userAnswer ? total + 1 : total;
-      }, 0);
-      return score;
-    }else {
-      return null;
-    }
+    setRendering(renderQuestions(1));
   }
 
   const startAgain = () => {
@@ -140,7 +132,7 @@ function QuizPage(props) {
   return (
     <div className="quiz-page">
       <div>
-        {renderQuestions(0)}
+        { rendering === '' ? renderQuestions(0) : rendering}
         { !isFormSubmitted && <button onClick={handleSubmit}>Check answers</button> }
         { isFormSubmitted && renderScore }
       </div>
