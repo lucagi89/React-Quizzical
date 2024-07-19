@@ -7,7 +7,7 @@ function QuizPage(props) {
   const url = 'https://opentdb.com/api.php?amount=5&type=multiple';
 
   const [ questionsData, setQuestionsData ] = useState([]);
-  const [formData, setFormData] = useState({});
+  // const [formData, setFormData] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   //this function will get the data from the API and set it to the state in the correct format
@@ -22,7 +22,9 @@ function QuizPage(props) {
       }
       return {
         question: question.question,
-        answers: answersArray()
+        answers: answersArray(),
+        correctAnswer: question.correct_answer,
+        userAnswer: ''
       };
     }));
   };
@@ -36,14 +38,6 @@ function QuizPage(props) {
         const data = await response.json();
         if (data.response_code === 0) {
           getQuestionsData(data.results);
-
-          setFormData(data.results.map((question, index) => {
-            return {
-              question: question.question,
-              correctAnswer: question.correct_answer,
-              userAnswer: ''
-            };
-          }));
         } else {
           fetchData();
         }
@@ -56,22 +50,45 @@ function QuizPage(props) {
   }, [] );
 
 
-  const renderQuestions = () => {
-    return questionsData.map((question, index) => {
-      return (
-          < Question
-            key={index}
-            id={index}
-            question={question}
-            onChange={handleChange}/>
-        );
-      });
+  const renderQuestions = (condition) => {
+    if (condition === 0) {
+      return questionsData.map((question, index) => {
+        return (
+            < Question
+              key={index}
+              id={index}
+              question={question}
+              onChange={handleChange}/>
+          );
+        });
+    }else {
+      return questionsData.map((question, index) => {
+        return (
+            < Question
+              key={index}
+              id={index}
+              question={question}/>
+          );
+        });
+    }
   };
+
+  // const renderSolution = () => {
+  //   return questionsData.map((question, index) => {
+  //     return (
+  //       <div key={index}>
+  //         <h3>{question.question}</h3>
+  //         <p>{question.correctAnswer}</p>
+  //       </div>
+  //     );
+  //   });
+  // }
+
 
   //this function will keep track and update the form state with the user's answer
   const handleChange = (event) => {
-    setFormData(prevFormData => {
-      return prevFormData.map((question, index) => {
+    setQuestionsData(prevQuestionsData => {
+      return prevQuestionsData.map((question, index) => {
         let answerIndex = event.target.name.slice(-1);
 
         if (index !== parseInt(answerIndex)) {
@@ -83,20 +100,23 @@ function QuizPage(props) {
           };
         }
       });
-      });
+    }
+    );
 
     };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('form submitted');
     setIsFormSubmitted(true);
+    // console.log(formData)
+    // console.log(questionsData)
+    renderQuestions(1);
   }
 
 
   const calculateScore = () => {
     if (isFormSubmitted) {
-      const score = formData.reduce((total, question) => {
+      const score = questionsData.reduce((total, question) => {
         return question.correctAnswer === question.userAnswer ? total + 1 : total;
       }, 0);
       return score;
@@ -112,16 +132,15 @@ function QuizPage(props) {
 
   const renderScore =
       <div>
-        <span>Your score is: {calculateScore()}</span>
+        <span>Your score is: {calculateScore()} </span>
         <button onClick={startAgain}>Start again</button>
       </div>
 
 
   return (
     <div className="quiz-page">
-      <h1>Quizzical</h1>
       <div>
-        {renderQuestions()}
+        {renderQuestions(0)}
         { !isFormSubmitted && <button onClick={handleSubmit}>Check answers</button> }
         { isFormSubmitted && renderScore }
       </div>

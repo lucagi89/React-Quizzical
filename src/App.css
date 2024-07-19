@@ -1,5 +1,8 @@
 @import url('quiz-page.css');
+@import url('landing-page.css');
 
-.App {
+
+body{
   text-align: center;
+  background-color: rgb(167, 225, 234);
 }
