@@ -57,8 +57,16 @@ input[type="radio"]:checked + label {
 
 .correct{
   background-color: #4caf50 !important;
+  cursor: default;
 }
 
 .incorrect{
   background-color: #f44336 !important;
+  cursor: default;
+}
+
+.neutral:hover{
+  background-color: #f9f9f9;
+  color: #000;
+  cursor: default;
 }

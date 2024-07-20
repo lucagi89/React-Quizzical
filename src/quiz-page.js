@@ -7,9 +7,7 @@ function QuizPage(props) {
   const url = 'https://opentdb.com/api.php?amount=5&type=multiple';
 
   const [ questionsData, setQuestionsData ] = useState([]);
-  // const [formData, setFormData] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
   const [rendering, setRendering] = useState('');
 
   const calculateScore = () => {
@@ -104,15 +102,12 @@ function QuizPage(props) {
           };
         }
       });
-    }
-    );
-
-    };
+    });
+  };
 
 
 
-  const handleSubmit = (event) => {
-    // event.preventDefault();
+  const handleSubmit = () => {
     setIsFormSubmitted(true);
     setRendering(renderQuestions(1));
   }
@@ -124,7 +119,7 @@ function QuizPage(props) {
 
   const renderScore =
       <div>
-        <span>Your score is: {calculateScore()} </span>
+        <h3>Your score is: {calculateScore()} </h3>
         <button onClick={startAgain}>Start again</button>
       </div>
 
